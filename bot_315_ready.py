@@ -14,7 +14,7 @@ from aiogram.fsm.context import FSMContext
 
 TOKEN = os.getenv("BOT_TOKEN")
 DATA_FILE = "group_data.json"
-ADMIN_ID = 1097147969
+ADMIN_IDS = [1097147969, 1204401699]
 
 logging.basicConfig(
     level=logging.INFO,
@@ -411,7 +411,7 @@ async def help_cmd(message: Message):
 @dp.message(F.text == "💊 Главврач")
 @dp.message(Command("admin"))
 async def admin_panel(message: Message):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         await message.answer("❌ Доступ запрещен. Вы не Главврач отделения.")
         return
 
@@ -433,7 +433,7 @@ async def admin_panel(message: Message):
 
 @dp.message(F.text == "⬅️ Назад")
 async def admin_back(message: Message, state: FSMContext):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
     await state.clear()
     await message.answer(
@@ -448,7 +448,7 @@ async def admin_back(message: Message, state: FSMContext):
 
 @dp.message(F.text == "➕ Добавить расписание")
 async def add_schedule_start(message: Message, state: FSMContext):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
 
     await state.set_state(ScheduleStates.choosing_week)
@@ -463,7 +463,7 @@ async def add_schedule_start(message: Message, state: FSMContext):
 
 @dp.message(ScheduleStates.choosing_week)
 async def add_schedule_week(message: Message, state: FSMContext):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
 
     if message.text == "❌ Отмена":
@@ -490,7 +490,7 @@ async def add_schedule_week(message: Message, state: FSMContext):
 
 @dp.message(ScheduleStates.choosing_day)
 async def add_schedule_day(message: Message, state: FSMContext):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
 
     if message.text == "❌ Отмена":
@@ -522,7 +522,7 @@ async def add_schedule_day(message: Message, state: FSMContext):
 
 @dp.message(ScheduleStates.entering_lessons)
 async def add_schedule_lessons(message: Message, state: FSMContext):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
 
     if message.text == "❌ Отмена":
@@ -576,7 +576,7 @@ async def add_schedule_lessons(message: Message, state: FSMContext):
 
 @dp.message(F.text == "🔄 Установить текущую неделю")
 async def set_current_week_start(message: Message, state: FSMContext):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
 
     await state.set_state(CurrentWeekState.choosing_week)
@@ -591,7 +591,7 @@ async def set_current_week_start(message: Message, state: FSMContext):
 
 @dp.message(CurrentWeekState.choosing_week)
 async def set_current_week_finish(message: Message, state: FSMContext):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
 
     if message.text == "❌ Отмена":
@@ -624,7 +624,7 @@ async def set_current_week_finish(message: Message, state: FSMContext):
 
 @dp.message(F.text == "🗑 Очистить расписание")
 async def clear_schedule_start(message: Message, state: FSMContext):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
 
     await state.set_state(ClearScheduleState.choosing_week)
@@ -639,7 +639,7 @@ async def clear_schedule_start(message: Message, state: FSMContext):
 
 @dp.message(ClearScheduleState.choosing_week)
 async def clear_schedule_finish(message: Message, state: FSMContext):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
 
     if message.text == "❌ Отмена":
@@ -670,7 +670,7 @@ async def clear_schedule_finish(message: Message, state: FSMContext):
 
 @dp.message(F.text == "📋 Показать расписание")
 async def admin_show_schedule(message: Message):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
 
     data = load_data()
@@ -819,7 +819,7 @@ async def show_materials(message: Message):
 
 @dp.message(Command("addmat"))
 async def add_material(message: Message):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
 
     parts = message.text.split(maxsplit=1)
@@ -843,7 +843,7 @@ async def add_material(message: Message):
 
 @dp.message(Command("delmat"))
 async def delete_material(message: Message):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
 
     parts = message.text.split()
@@ -873,7 +873,7 @@ async def delete_material(message: Message):
 
 @dp.message(Command("broadcast"))
 async def broadcast_message(message: Message):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
 
     parts = message.text.split(maxsplit=1)
@@ -919,7 +919,7 @@ async def broadcast_message(message: Message):
 
 @dp.message(Command("stats"))
 async def show_stats(message: Message):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
 
     data = load_data()
