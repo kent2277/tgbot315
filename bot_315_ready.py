@@ -345,7 +345,7 @@ def delete_material_db(index):
 # =========================
 
 def get_kb_for_user(user_id: int):
-    return admin_keyboard if user_id == ADMIN_ID else student_keyboard
+    return admin_keyboard if user_id in ADMIN_IDS else student_keyboard
 
 
 def week_from_button(text):
